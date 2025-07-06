@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 
 export default function WhiteNav() {
@@ -8,7 +9,7 @@ export default function WhiteNav() {
             <div className="container">
               <div className="nav-layout">
                 <div className="nav-left">
-                  <a
+                  <Link
                     href="/"
                     aria-current="page"
                     className="logo-wrap w-inline-block"
@@ -26,22 +27,22 @@ export default function WhiteNav() {
                     >
                       Logo
                     </p>
-                  </a>
+                  </Link>
                 </div>
                 <div className="nav-middle">
                   <div className="nav-menu">
-                    <a href="/" aria-current="page" className="nav-link  ">
+                    <Link href="/" aria-current="page" className="nav-link  ">
                       Home
-                    </a>
-                    <a href="/products" className="nav-link ">
+                    </Link>
+                    <Link href="/shop" className="nav-link ">
                       Shop
-                    </a>
-                    <a href="/our-categories" className="nav-link ">
+                    </Link>
+                    <Link href="/category" className="nav-link ">
                       Category
-                    </a>
-                    <a href="/about-us" className="nav-link ">
+                    </Link>
+                    <Link href="/" className="nav-link ">
                       About
-                    </a>
+                    </Link>
                     {/* <a href="/client-reviews" className="nav-link ">
                       Reviews
                     </a>
@@ -62,8 +63,8 @@ export default function WhiteNav() {
                       className="search-icon"
                     />
                   </div>
-                  <a
-                    href="/user-account"
+                  <Link
+                    href="/signup"
                     className="user-icon-wrap w-inline-block"
                   >
                     <img
@@ -72,7 +73,7 @@ export default function WhiteNav() {
                       alt="a black and white photo of a symbol"
                       className="user-icon"
                     />
-                  </a>
+                  </Link>
                   {/* <div
                     data-open-product=""
                     data-wf-cart-type="modal"
@@ -544,7 +545,7 @@ export default function WhiteNav() {
         <div className="search-wrapper">
           <div className="section-spacing">
             <div className="container">
-              <form action="/search" className="search-wrap w-form">
+              <form action="." className="search-wrap w-form">
                 <input
                   className="search-input w-input"
                   name="query"

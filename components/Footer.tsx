@@ -137,7 +137,7 @@ export default function Footer() {
                       offers, new arrivals, &expert fashion tips.
                     </p>
                   </div>
-                  <div className="footer-subscription-from-block w-form">
+                  <div className="footer-subscription-from-block">
                     <form
                       id="email-form"
                       name="email-form"

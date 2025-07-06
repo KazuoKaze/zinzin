@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function Navigation() {
@@ -8,11 +9,11 @@ export default function Navigation() {
           <div className="container">
             <div className="nav-layout">
               <div className="nav-left">
-                <a
+                <Link
                   href="/"
                   aria-current="page"
                   className="logo-wrap w-inline-block w--current"
-                  style={{ textDecoration: "none" }}  
+                  style={{ textDecoration: "none" }}
                 >
                   {/* <img
                     loading="lazy"
@@ -26,26 +27,26 @@ export default function Navigation() {
                   >
                     Logo
                   </p>
-                </a>
+                </Link>
               </div>
               <div className="nav-middle dark">
                 <div className="nav-menu">
-                  <a
+                  <Link
                     href="/"
                     aria-current="page"
                     className="nav-link white w--current"
                   >
                     Home
-                  </a>
-                  <a href="/products" className="nav-link white">
+                  </Link>
+                  <Link href="/shop" className="nav-link white">
                     Shop
-                  </a>
-                  <a href="/our-categories" className="nav-link white">
+                  </Link>
+                  <Link href="/category" className="nav-link white">
                     Category
-                  </a>
-                  <a href="/about-us" className="nav-link white">
+                  </Link>
+                  <Link href="/" className="nav-link white">
                     About
-                  </a>
+                  </Link>
                   {/* <a href="/client-reviews" className="nav-link white">
                     Reviews
                   </a>
@@ -67,8 +68,8 @@ export default function Navigation() {
                     className="search-icon"
                   />
                 </div>
-                <a
-                  href="/user-account"
+                <Link
+                  href="/signup"
                   className="user-icon-wrap w-inline-block"
                 >
                   <img
@@ -77,7 +78,7 @@ export default function Navigation() {
                     alt="a man riding a wave on top of a surfboard"
                     className="user-icon"
                   />
-                </a>
+                </Link>
                 {/* <div
                   data-open-product=""
                   data-wf-cart-type="modal"
@@ -549,7 +550,7 @@ export default function Navigation() {
       <div className="search-wrapper">
         <div className="section-spacing">
           <div className="container">
-            <form action="/search" className="search-wrap w-form">
+            <form action="" className="search-wrap w-form">
               <input
                 className="search-input w-input"
                 name="query"
