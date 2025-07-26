@@ -1,4 +1,8 @@
+"use client";
 
+import { useState } from "react";
+import { useProducts } from "@/hooks/useProducts";
+import { Product } from "@/lib/api-client";
 
 import Footer from "@/components/Footer";
 import Instagram from "@/components/Instagram";
@@ -11,6 +15,10 @@ import React from "react";
 import "../new.css";
 
 function Shop() {
+  const { products, isLoading, error } = useProducts({ limit: 20 });
+
+  console.log(products, 'this is products')
+
   return (
     <div className="page-wrapper">
       <div className="nav-group-home">
@@ -18,9 +26,9 @@ function Shop() {
         <WhiteNav />
       </div>
       <div className="main-wrapper">
-              <Hero />
-              <Stores />
-              <Instagram />
+        <Hero products={products} isLoading={isLoading} error={error} />
+        <Stores />
+        <Instagram />
       </div>
       <Footer />
     </div>

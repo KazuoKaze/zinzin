@@ -1,215 +1,296 @@
+"use client";
 
+import React, { useState } from "react";
 
-export default function Hero() {
+import { useProducts } from "@/hooks/useProducts";
+
+import { Product } from "@/lib/api-client";
+
+interface HeroProps {
+  products: Product[]; // It now accepts an ARRAY of products
+  isLoading: boolean;
+  error: string | null;
+}
+
+export default function Hero({ products, isLoading, error }: HeroProps) {
+  if (isLoading) {
     return (
-      <div className="products-section-2">
-        <div className="section-spacing">
-          <div className="container">
-            <div className="products-heading-layout">
-              <div className="section-title-wrap products-hero-title">
-                            <h1 className="section-title">Latest Products</h1>
-                            
-              </div>
-              <div className="filter-dropdown-wrap">
-                <div
-                  data-delay="0"
-                  data-hover="false"
-                  className="categori-filter w-dropdown"
-                >
-                  <div className="categori-filter-toggle w-dropdown-toggle">
-                    <div className="w-icon-dropdown-toggle"></div>
-                    <div className="categori-filter-text">Category</div>
-                  </div>
-                  <nav className="categori-filter-dropdown-list w-dropdown-list">
-                    <div className="w-dyn-list">
-                      <div role="list" className="w-dyn-items">
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/denim-jacket"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Denim Jacket
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/long-sleeve-shirt"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Long sleeve shirt
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/motorcycle-jacket"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Motorcycle Jacket
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/sleeve-polo-shirt"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Sleeve polo shirt
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/american-style-hoodie"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            American Style Hoodie
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/baseball-jacket"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Baseball Jacket
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/leather-jacket"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Leather Jacket
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/football-t-shirt"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Football T-Shirt
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/loose-shorts"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Loose Shorts
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/loose-t-shirt"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Loose T-shirt
-                          </a>
-                        </div>
-                        <div role="listitem" className="w-dyn-item">
-                          <a
-                            href="/category/printed-vest"
-                            className="category-filter-dropdown-item w-dropdown-link"
-                          >
-                            Printed Vest
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </nav>
-                </div>
-                <div
-                  data-delay="0"
-                  data-hover="false"
-                  className="filter-price-dropdown w-dropdown"
-                >
-                  <div className="filter-dropdown-toggle w-dropdown-toggle">
-                    <div className="w-icon-dropdown-toggle"></div>
-                    <div className="filter-dropdown-text">Price</div>
-                  </div>
-                  <nav className="price-filter-dropdown-list w-dropdown-list">
-                    <a
-                      href="#"
-                      className="price-filter-dropdown-item w-dropdown-link"
-                    >
-                      $50 - $100
-                    </a>
-                    <a
-                      href="#"
-                      className="price-filter-dropdown-item w-dropdown-link"
-                    >
-                      $100 - $200
-                    </a>
-                    <a
-                      href="#"
-                      className="price-filter-dropdown-item w-dropdown-link"
-                    >
-                      $200 - $400
-                    </a>
-                    <a
-                      href="#"
-                      className="price-filter-dropdown-item w-dropdown-link"
-                    >
-                      $400 - $600
-                    </a>
-                    <a
-                      href="#"
-                      className="price-filter-dropdown-item w-dropdown-link"
-                    >
-                      $600 - $800
-                    </a>
-                    <a
-                      href="#"
-                      className="price-filter-dropdown-item w-dropdown-link"
-                    >
-                      $800 - $1000
-                    </a>
-                  </nav>
-                </div>
-              </div>
+      <div
+        className="shop-container"
+        style={{ padding: "2rem", textAlign: "center" }}
+      >
+        <p>Loading products...</p>
+      </div>
+    );
+  }
+
+  // 2. Handle the Error state
+  if (error) {
+    return (
+      <div
+        className="shop-container"
+        style={{ padding: "2rem", textAlign: "center", color: "red" }}
+      >
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
+
+  // 3. Handle the No Products Found state
+  if (!products || products.length === 0) {
+    return (
+      <div
+        className="shop-container"
+        style={{ padding: "2rem", textAlign: "center" }}
+      >
+        <p>No products found.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="products-section-2">
+      <div className="section-spacing">
+        <div className="container">
+          <div className="products-heading-layout">
+            <div className="section-title-wrap products-hero-title">
+              <h1 className="section-title">Latest Products</h1>
             </div>
-            <div
-              data-w-id="fed2a879-2ec9-f388-02b4-f3e3e2fd953b"
-            //   style="opacity: 0"
-              className="w-dyn-list"
-            >
-              <div role="list" className="products-layout-2 w-dyn-items">
-                <div role="listitem" className="w-dyn-item">
-                  <div className="products">
-                    <a
-                      aria-label="product"
-                      href="/product/sleeve-casual-shirts"
-                      className="products-thumb-wrap w-inline-block"
-                    >
-                      <img
-                        data-wf-sku-bindings="%5B%7B%22from%22%3A%22f_main_image_4dr%22%2C%22to%22%3A%22src%22%7D%5D"
-                        src="https://cdn.prod.website-files.com/673456a62c11f0880874b3e2/6734587a2ca7616f46594374_670a813b3f067af3080ee968_seller-thumb-1.jpeg"
-                        alt=""
-                        loading="lazy"
-                        className="products-thumb"
-                      />
-                      <div className="offer-text-wrap">
-                        <div className="offer-text">30% Off</div>
-                      </div>
-                    </a>
-                    <div className="products-content">
-                      <div className="products-title-wrap">
+            <div className="filter-dropdown-wrap">
+              <div
+                data-delay="0"
+                data-hover="false"
+                className="categori-filter w-dropdown"
+              >
+                <div className="categori-filter-toggle w-dropdown-toggle">
+                  <div className="w-icon-dropdown-toggle"></div>
+                  <div className="categori-filter-text">Category</div>
+                </div>
+                <nav className="categori-filter-dropdown-list w-dropdown-list">
+                  <div className="w-dyn-list">
+                    <div role="list" className="w-dyn-items">
+                      <div role="listitem" className="w-dyn-item">
                         <a
-                          href="/product/sleeve-casual-shirts"
-                          className="products-title"
+                          href="/category/denim-jacket"
+                          className="category-filter-dropdown-item w-dropdown-link"
                         >
-                          Sleeve Casual Shirts
+                          Denim Jacket
                         </a>
                       </div>
-                      <div className="products-text-wrap">
-                        <p
-                          data-wf-sku-bindings="%5B%7B%22from%22%3A%22f_price_%22%2C%22to%22%3A%22innerHTML%22%7D%5D"
-                          className="products-text"
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/long-sleeve-shirt"
+                          className="category-filter-dropdown-item w-dropdown-link"
                         >
-                          $ 54.00 USD
-                        </p>
+                          Long sleeve shirt
+                        </a>
+                      </div>
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/motorcycle-jacket"
+                          className="category-filter-dropdown-item w-dropdown-link"
+                        >
+                          Motorcycle Jacket
+                        </a>
+                      </div>
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/sleeve-polo-shirt"
+                          className="category-filter-dropdown-item w-dropdown-link"
+                        >
+                          Sleeve polo shirt
+                        </a>
+                      </div>
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/american-style-hoodie"
+                          className="category-filter-dropdown-item w-dropdown-link"
+                        >
+                          American Style Hoodie
+                        </a>
+                      </div>
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/baseball-jacket"
+                          className="category-filter-dropdown-item w-dropdown-link"
+                        >
+                          Baseball Jacket
+                        </a>
+                      </div>
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/leather-jacket"
+                          className="category-filter-dropdown-item w-dropdown-link"
+                        >
+                          Leather Jacket
+                        </a>
+                      </div>
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/football-t-shirt"
+                          className="category-filter-dropdown-item w-dropdown-link"
+                        >
+                          Football T-Shirt
+                        </a>
+                      </div>
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/loose-shorts"
+                          className="category-filter-dropdown-item w-dropdown-link"
+                        >
+                          Loose Shorts
+                        </a>
+                      </div>
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/loose-t-shirt"
+                          className="category-filter-dropdown-item w-dropdown-link"
+                        >
+                          Loose T-shirt
+                        </a>
+                      </div>
+                      <div role="listitem" className="w-dyn-item">
+                        <a
+                          href="/category/printed-vest"
+                          className="category-filter-dropdown-item w-dropdown-link"
+                        >
+                          Printed Vest
+                        </a>
                       </div>
                     </div>
                   </div>
+                </nav>
+              </div>
+              <div
+                data-delay="0"
+                data-hover="false"
+                className="filter-price-dropdown w-dropdown"
+              >
+                <div className="filter-dropdown-toggle w-dropdown-toggle">
+                  <div className="w-icon-dropdown-toggle"></div>
+                  <div className="filter-dropdown-text">Price</div>
                 </div>
-                <div role="listitem" className="w-dyn-item">
+                <nav className="price-filter-dropdown-list w-dropdown-list">
+                  <a
+                    href="#"
+                    className="price-filter-dropdown-item w-dropdown-link"
+                  >
+                    $50 - $100
+                  </a>
+                  <a
+                    href="#"
+                    className="price-filter-dropdown-item w-dropdown-link"
+                  >
+                    $100 - $200
+                  </a>
+                  <a
+                    href="#"
+                    className="price-filter-dropdown-item w-dropdown-link"
+                  >
+                    $200 - $400
+                  </a>
+                  <a
+                    href="#"
+                    className="price-filter-dropdown-item w-dropdown-link"
+                  >
+                    $400 - $600
+                  </a>
+                  <a
+                    href="#"
+                    className="price-filter-dropdown-item w-dropdown-link"
+                  >
+                    $600 - $800
+                  </a>
+                  <a
+                    href="#"
+                    className="price-filter-dropdown-item w-dropdown-link"
+                  >
+                    $800 - $1000
+                  </a>
+                </nav>
+              </div>
+            </div>
+          </div>
+          <div
+            data-w-id="fed2a879-2ec9-f388-02b4-f3e3e2fd953b"
+            //   style="opacity: 0"
+            className="w-dyn-list"
+          >
+            <div role="list" className="products-layout-2 w-dyn-items">
+              {
+                products.map((product) => {
+                  const primaryImage =
+                    product.images && product.images.length > 0
+                      ? product.images.find((img) => img.isPrimary) ||
+                        product.images[0]
+                      : null;
+                  
+                  console.log(primaryImage, 'this is primaryimage')
+                  
+                  return (
+                    <div
+                      key={product.id}
+                      role="listitem"
+                      className="w-dyn-item"
+                    >
+                      <div className="products">
+                        <a
+                          aria-label="product"
+                          href="/product/sleeve-casual-shirts"
+                          className="products-thumb-wrap w-inline-block"
+                        >
+                          {/* <img
+                            data-wf-sku-bindings="%5B%7B%22from%22%3A%22f_main_image_4dr%22%2C%22to%22%3A%22src%22%7D%5D"
+                            src="https://cdn.prod.website-files.com/673456a62c11f0880874b3e2/6734587a2ca7616f46594374_670a813b3f067af3080ee968_seller-thumb-1.jpeg"
+                            alt=""
+                            loading="lazy"
+                            className="products-thumb"
+                          /> */}
+                          {primaryImage ? (
+                            <img
+                              src={primaryImage.imageUrl}
+                              alt={primaryImage.altText}
+                              loading="lazy"
+                              className="products-thumb"
+                            />
+                          ) : (
+                            // Optional: A placeholder for products with no image
+                            <div
+                              className="products-thumb-placeholder"
+                              style={{
+                                height: "200px",
+                                backgroundColor: "#eee",
+                              }}
+                            />
+                          )}
+                          <div className="offer-text-wrap">
+                            <div className="offer-text">30% Off</div>
+                          </div>
+                        </a>
+                        <div className="products-content">
+                          <div className="products-title-wrap">
+                            <a
+                              href="/product/sleeve-casual-shirts"
+                              className="products-title"
+                            >
+                              {product.product}
+                            </a>
+                          </div>
+                          <div className="products-text-wrap">
+                            <p
+                              data-wf-sku-bindings="%5B%7B%22from%22%3A%22f_price_%22%2C%22to%22%3A%22innerHTML%22%7D%5D"
+                              className="products-text"
+                            >
+                              $ {product.price} USD
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              }
+              {/* <div role="listitem" className="w-dyn-item">
                   <div className="products">
                     <a
                       aria-label="product"
@@ -851,11 +932,11 @@ export default function Hero() {
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </div> */}
             </div>
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 }
